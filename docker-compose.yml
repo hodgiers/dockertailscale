@@ -1,0 +1,32 @@
+version: "3"
+services:
+    tailscale:
+        hostname: tailscale                         # This will become the tailscale device name
+        image: tailscale/tailscale
+        container_name: homelabedge
+        volumes:
+            - "./tailscale_var_lib:/var/lib"        # State data will be stored in this directory
+            - "/dev/net/tun:/dev/net/tun"           # Required for tailscale to work
+        cap_add:                                    # Required for tailscale to work
+          - net_admin
+          - sys_module
+        environment:
+          - TAILSCALE_KEY=${TAILSCALE_KEY}  # Use the environment variable
+        command: tailscaled
+
+    devcontainer:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        container_name: dev_container
+        network_mode: service:tailscale    # Share network namespace with tailscale service
+        depends_on:
+          - tailscale
+        command: tail -f /dev/null  # Keep the container running
+        restart: always
+        volumes:
+          - ./scripts:/scripts  # Mount your local development directory
+
+#networks:
+  #tailscale_network:
+    #external: true
