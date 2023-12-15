@@ -1,6 +1,8 @@
 version: "3"
 services:
     tailscale:
+        env_file:
+          - .envrc
         hostname: tailscale                         # This will become the tailscale device name
         image: tailscale/tailscale
         container_name: homelabedge
@@ -10,9 +12,15 @@ services:
         cap_add:                                    # Required for tailscale to work
           - net_admin
           - sys_module
+          - net_raw
         environment:
-          - TAILSCALE_KEY=${TAILSCALE_KEY}  # Use the environment variable
+          - TS_AUTHKEY=${TAILSCALE_KEY}  # Use the environment variable
+          - TS_STATE_DIR="./tailscale_var_lib:/var/lib"
+          - TS_AUTH_ONCE
+          - TS_EXTRA_ARGS="--accept-routes"
         command: tailscaled
+
+
 
     devcontainer:
         build:

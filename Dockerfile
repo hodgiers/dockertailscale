@@ -16,11 +16,17 @@ RUN apt install git -y
 RUN apt install python3 -y
 RUN apt install curl -y
 RUN apt install python3-pip -y
-RUN pip3 install PyPDF2
-RUN pip3 install pdfplumber
-RUN pip3 install pan-os-python
-RUN pip3 install python_otbr_api
+RUN apt install iputils-ping -y 
+RUN apt install iproute2 -y
+RUN apt install inetutils-traceroute -y
+RUN apt install net-tools -y
+###
+#RUN pip3 install PyPDF2
+#RUN pip3 install pdfplumber
+#RUN pip3 install pan-os-python
+#RUN pip3 install python_otbr_api
 #RUN curl -sSL https://install.python-poetry.org | python3 -
+
 
 #RUN apt install python-dev -y
 #RUN apt install libxml2-dev -y
